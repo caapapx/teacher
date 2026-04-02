@@ -64,6 +64,7 @@ The skills are designed to work across multiple runtimes and AI environments. Ke
 | Multimodal support varies | ASCII diagrams as the baseline visual representation; image generation as an enhancement |
 | Runtime-specific metadata | Keep runtime-only files inside runtime folders such as `teacher-cs/codex/agents/` |
 | Runtime packaging differences | `teacher-cs/claude`, `teacher-cs/codex`, and `teacher-cs/cursor` stay self-contained for copy-install |
+| Global dev install | `teacher/scripts/install-global.sh` and `teacher-cs/scripts/install-global.sh` symlink into `~/.agents/skills` and each client; pair with `uninstall-global.sh` when testing locally (see repo READMEs) |
 
 ---
 

@@ -40,6 +40,26 @@ cp -r teacher-cs/cursor your-project/.cursor/skills/teacher-cs
 
 安装后正常提问即可，skill 会自动接管教学流程。
 
+### 全局安装（Cursor + Claude Code + Codex）
+
+在通用版 skill 目录下执行，将本仓库链到 `~/.agents/skills/teacher`，再链到各客户端全局 skills（与常见 deepsee 类安装脚本一致）：
+
+```bash
+cd teacher && ./scripts/install-global.sh
+```
+
+装完后请**重启** Cursor、Claude Code、Codex。因符号链接指向当前 clone，直接改 `teacher/` 下文件即可全局生效。
+
+**卸载**（只删符号链接，**不删**仓库）：
+
+```bash
+cd teacher && ./scripts/uninstall-global.sh
+```
+
+仅当 `~/.agents/skills/teacher` 为符号链接且解析到**当前** `teacher/` 目录时才会删除；若曾手动改指向其它路径，脚本会跳过并提示。
+
+**teacher-cs**（按 runtime 分包）请使用 `teacher-cs/scripts/install-global.sh`，说明见 [`teacher-cs/README.md`](./teacher-cs/README.md)。
+
 ---
 
 ## 系统架构
@@ -152,10 +172,16 @@ teacher-skill/
 ├── CONTRIBUTING.md
 ├── teacher/
 │   ├── SKILL.md
+│   ├── scripts/
+│   │   ├── install-global.sh
+│   │   └── uninstall-global.sh
 │   ├── references/
 │   └── evals/
 └── teacher-cs/
     ├── evals/
+    ├── scripts/
+    │   ├── install-global.sh
+    │   └── uninstall-global.sh
     ├── claude/
     │   ├── SKILL.md
     │   ├── references/

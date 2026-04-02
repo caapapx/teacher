@@ -40,6 +40,26 @@ For the generic version (not CS-only), copy `teacher/` to your runtime's skills 
 
 After install, ask questions as usual. The skill takes over the teaching flow automatically.
 
+### Global install (Cursor + Claude Code + Codex)
+
+From the generic skill folder, symlink this repo into `~/.agents/skills/teacher` and into each client’s global skills (same symlink-via-`~/.agents/skills` pattern as `skill-max/deepsee/scripts/install-global.sh`):
+
+```bash
+cd teacher && ./scripts/install-global.sh
+```
+
+Restart Cursor, Claude Code, and Codex after install. Edits under `teacher/` take effect globally because the links point at your clone.
+
+**Uninstall** (removes symlinks only; does not delete the repo):
+
+```bash
+cd teacher && ./scripts/uninstall-global.sh
+```
+
+`~/.agents/skills/teacher` is removed only when it is a symlink resolving to **this** `teacher/` directory; otherwise the script skips it and prints a message.
+
+For **teacher-cs** (per-runtime packages), use `teacher-cs/scripts/install-global.sh` — see [`teacher-cs/README.md`](./teacher-cs/README.md).
+
 ---
 
 ## System Architecture (At a Glance)
@@ -152,10 +172,16 @@ teacher-skill/
 ├── CONTRIBUTING.md
 ├── teacher/
 │   ├── SKILL.md
+│   ├── scripts/
+│   │   ├── install-global.sh
+│   │   └── uninstall-global.sh
 │   ├── references/
 │   └── evals/
 └── teacher-cs/
     ├── evals/
+    ├── scripts/
+    │   ├── install-global.sh
+    │   └── uninstall-global.sh
     ├── claude/
     │   ├── SKILL.md
     │   ├── references/

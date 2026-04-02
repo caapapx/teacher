@@ -6,6 +6,26 @@ the folders here are installable runtime packages, not abstract docs.
 
 ## install
 
+### global symlinks (Cursor + Claude Code + Codex)
+
+from this `teacher-cs/` directory:
+
+```bash
+./scripts/install-global.sh
+```
+
+this creates primary links under `~/.agents/skills/` (`teacher-cs-cursor`, `teacher-cs-claude`, `teacher-cs-codex` pointing at `cursor/`, `claude/`, `codex/`) and links each client’s `skills/teacher-cs` to the matching package. **restart** all clients after install.
+
+**uninstall** (symlinks only; repo untouched):
+
+```bash
+./scripts/uninstall-global.sh
+```
+
+agent-side links are removed only when they resolve to **this** repo’s `cursor/`, `claude/`, and `codex/` folders.
+
+### project copy (manual)
+
 | runtime | copy this folder | install to |
 |---|---|---|
 | Claude Code | [`claude/`](./claude/) | `.claude/skills/teacher-cs/` |
