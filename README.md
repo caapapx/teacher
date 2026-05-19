@@ -2,15 +2,15 @@
 
 [English](./README.md) | [中文](./README.zh-CN.md)
 
-**A 300-line teaching workflow that turns AI from an answer machine into a Socratic tutor.**
+**An evidence-based teaching workflow that turns AI from an answer machine into a Socratic tutor — any domain, including computer science.**
 
 <p align="center">
   <img src="docs/skill-logo.png" width="220" alt="teacher-skill logo" />
 </p>
 
-Traditional tutoring (1:1, 1:many) and most LLM Q&A do the same thing: compress knowledge and dump it to users. It feels efficient, but retention is weak.
+Traditional tutoring and most LLM Q&A compress knowledge and dump it to users. It feels efficient, but retention is weak.
 
-This skill uses evidence-based learning strategies (retrieval practice, interleaving, dual coding, self-explanation, metacognition, and Socratic questioning) to force active thinking and improve transfer.
+This skill uses retrieval practice, interleaving, dual coding, self-explanation, metacognition, and Socratic questioning to force active thinking and improve transfer.
 
 Research anchor: Freeman et al. (2014), *Active learning increases student performance in science, engineering, and mathematics*, *PNAS* 111(23), 8410-8415.  
 https://www.pnas.org/doi/10.1073/pnas.1319030111
@@ -23,143 +23,62 @@ https://www.pnas.org/doi/10.1073/pnas.1319030111
 
 ## Quick Start
 
-Pick your runtime and copy one folder:
+Copy the skill folder to your runtime's global or project skills path:
 
 ```bash
-# Claude Code
-cp -r teacher-cs/claude your-project/.claude/skills/teacher-cs
-
-# Codex
-cp -r teacher-cs/codex your-project/.codex/skills/teacher-cs
-
-# Cursor
-cp -r teacher-cs/cursor your-project/.cursor/skills/teacher-cs
+cp -r teacher ~/.claude/skills/teacher   # Claude Code (example)
 ```
 
-For the generic version (not CS-only), copy `teacher/` to your runtime's skills path.
-
-After install, ask questions as usual. The skill takes over the teaching flow automatically.
-
-### Global install (Cursor + Claude Code + Codex)
-
-From the generic skill folder, symlink this repo into `~/.agents/skills/teacher` and into each client’s global skills (same symlink-via-`~/.agents/skills` pattern as `skill-max/deepsee/scripts/install-global.sh`):
+Or symlink globally (recommended for development):
 
 ```bash
-cd teacher && ./scripts/install-global.sh
+./scripts/install-global.sh
+# or: cd teacher && ./scripts/install-global.sh
 ```
 
-Restart Cursor, Claude Code, and Codex after install. Edits under `teacher/` take effect globally because the links point at your clone.
+Restart Cursor, Claude Code, and Codex after install.
 
-**Uninstall** (removes symlinks only; does not delete the repo):
+**Uninstall** (symlinks only; repo untouched):
 
 ```bash
-cd teacher && ./scripts/uninstall-global.sh
+./scripts/uninstall-global.sh
 ```
 
-`~/.agents/skills/teacher` is removed only when it is a symlink resolving to **this** `teacher/` directory; otherwise the script skips it and prints a message.
+The install script also removes legacy `teacher-cs` global links from older layouts.
 
-For **teacher-cs** (per-runtime packages), use `teacher-cs/scripts/install-global.sh` — see [`teacher-cs/README.md`](./teacher-cs/README.md).
+---
+
+## One Skill, All Domains + CS
+
+Computer science (algorithms, LeetCode, system design, interviews, languages, distributed systems, AI/LLM) is built into the same **`teacher`** skill:
+
+- Core workflow: `teacher/SKILL.md` (~115 lines)
+- CS adapter: `teacher/references/domain-cs.md` (read when topic is CS)
+- Mode details: `teacher/references/modes.md`
+- Routing detail: `teacher/references/routing.md`
+- Viz patterns: `teacher/references/viz-patterns.md`
+
+There is no separate `teacher-cs` skill anymore.
 
 ---
 
 ## System Architecture (At a Glance)
 
-The architecture below shows how resources are indexed, converted into adaptive skill paths, and fed back through teacher/student loops.
-
 <img src="docs/skill-desribe.png" width="900" alt="Resource flow architecture and teacher new skillset" />
-
----
-
-## Passive vs Active Teaching
-
-| Dimension | Passive mode (typical prompt) | Active mode (`teacher-skill`) |
-|---|---|---|
-| Can the user restate definitions? | Usually | Yes |
-| Can the user solve new problems? | Unreliable | Significantly better |
-| Can the system detect misconceptions? | Weak | Strong |
-| User-generated output during session | Minimal | Required |
-| Adaptive to user level | Often no | Built in |
-
-Core result: active learning improves exam performance by about **0.47 SD**, and lecture-only settings show much higher failure risk (Freeman et al., 2014).
-
-![Freeman et al. 2014 Fig 1: Active learning vs lecture failure rates](docs/freeman-2014-fig1-failure-rate.jpg)
-
-Operational impact snapshot (workflow efficiency):
-
-<img src="docs/skill-boost-comparison.png" width="900" alt="Skill boost comparison: before and after with teacher-skill" />
 
 ---
 
 ## Seven Teaching Modes
 
-| Mode | Name | What it does | Typical trigger |
-|---|---|---|---|
-| A | Guided Decomposition | Stepwise breakdown and manual trace | Algorithms, math derivations, case analysis |
-| B | Socratic + Advanced Retrieval | Question chains for deep understanding | Interview prep, concept deep dive |
-| C | Mental Model + Dual Coding | Explain abstract ideas with text + visuals | System design, scheduling, Transformer |
-| D | Simplification + Analogy | Translate jargon into beginner language | Intro concepts, "what is X?" |
-| E | Deep Inquiry | Iterative why/how/boundary probing | Mechanism and causality questions |
-| F | Interleaving + Generative Learning | Mixed drills + summaries/flashcards/analogies | "Learn X systematically" |
-| G | Metacognitive Strategy | Diagnose learning bottlenecks | Low retention, stuck learning |
-
-Routing adapts by time budget, answer style, interaction intensity, and baseline level.
-
----
-
-## Evidence Base
-
-| Method | Source | Key finding |
+| Mode | Name | Typical trigger |
 |---|---|---|
-| Active learning | https://www.pnas.org/doi/10.1073/pnas.1319030111 | +0.47 SD effect size |
-| Retrieval practice | https://journals.sagepub.com/doi/10.1111/j.1467-9280.2006.01693.x | Recall beats re-reading |
-| Interleaving | https://www.tandfonline.com/doi/abs/10.1080/00220970709598675 | Mixed practice > blocked practice |
-| Dual coding | https://files.eric.ed.gov/fulltext/ED340377.pdf | Words + visuals > words only |
-| Self-explanation | https://www.taylorfrancis.com/chapters/edit/10.4324/9780203052860-13/ | Active explanation improves outcomes |
-| Metacognition | https://psycnet.apa.org/record/1980-09388-001 | Monitoring understanding is trainable |
-| Socratic questioning | https://link.springer.com/article/10.1007/BF02310573 | Guided inquiry outperforms direct telling |
-| Learning-techniques review | https://journals.sagepub.com/doi/10.1177/1529100612453266 | Retrieval/interleaving are high-utility |
-
----
-
-## Knowledge Source Priority
-
-```
-User-provided material (notes, textbooks, code)
-  -> if insufficient
-Web search (latest docs, APIs, breaking changes)
-  -> if unavailable
-RAG / local knowledge base
-  -> if not configured
-Model internal knowledge
-```
-
-User material is always first priority.
-
----
-
-## `teacher` vs `teacher-cs`
-
-| Skill | Scope | Optimization |
-|---|---|---|
-| [`teacher`](./teacher/) | Any domain | Concept formation, review, guided drills |
-| [`teacher-cs`](./teacher-cs/) | Computer science | Algorithm tracing, system design, interview training, visual pedagogy |
-
-`teacher-cs` adds:
-
-- Algorithm state-snapshot tracing
-- CS domain adapters (Go, algorithms, systems, AI, interviews)
-- Interactive HTML visualizations
-- Visualization decision tree (ASCII -> Mermaid -> HTML)
-
----
-
-## Runtime Matrix
-
-| Runtime | Path | Notes |
-|---|---|---|
-| Claude Code | [`teacher-cs/claude/`](./teacher-cs/claude/) | Full package: evals + knowledge sources + viz patterns |
-| Codex | [`teacher-cs/codex/`](./teacher-cs/codex/) | Includes `agents/openai.yaml` |
-| Cursor | [`teacher-cs/cursor/`](./teacher-cs/cursor/) | Lean package with core teaching logic |
+| A | Guided Decomposition | Problems, algorithms, derivations |
+| B | Socratic + Advanced Retrieval | Exams, interviews, deep dive |
+| C | Mental Model + Dual Coding | Abstract concepts, system internals |
+| D | Simplification + Analogy | Intro concepts, "what is X?" |
+| E | Deep Inquiry | Mechanism, why/how questions |
+| F | Interleaving + Generative Learning | Systematic study plans |
+| G | Metacognitive Strategy | Stuck, low retention |
 
 ---
 
@@ -170,60 +89,35 @@ teacher-skill/
 ├── README.md
 ├── README.zh-CN.md
 ├── CONTRIBUTING.md
-├── teacher/
-│   ├── SKILL.md
-│   ├── scripts/
-│   │   ├── install-global.sh
-│   │   └── uninstall-global.sh
-│   ├── references/
-│   └── evals/
-└── teacher-cs/
-    ├── evals/
+├── scripts/
+│   ├── install-global.sh      # wrapper → teacher/scripts/
+│   └── uninstall-global.sh
+└── teacher/
+    ├── SKILL.md
     ├── scripts/
-    │   ├── install-global.sh
-    │   └── uninstall-global.sh
-    ├── claude/
-    │   ├── SKILL.md
-    │   ├── references/
-    │   └── evals/
-    ├── codex/
-    │   ├── SKILL.md
-    │   ├── agents/
-    │   └── references/
-    └── cursor/
-        ├── SKILL.md
-        └── references/
+    ├── references/
+    │   ├── domain-cs.md
+    │   ├── modes.md
+    │   ├── routing.md
+    │   └── ...
+    └── evals/
+        └── evals.json
 ```
 
 ---
 
 ## Real Teaching Scenarios
 
-- "How do I solve Two Sum?" -> Mode A, outputs variable table + step snapshots + self-checks, not direct final code.
-- "Redis persistence interview prep" -> Mode B, baseline probe + multi-layer question chain.
-- "Explain Transformer attention" -> Mode C, matrix-style visual + explanation + checks.
-- "Systematically learn distributed systems" -> Mode F, time-boxed plan + mixed drills + generative tasks.
-
----
-
-## TODO
-
-- [ ] More domain adapters (medicine, law, finance)
-- [ ] Expand eval cases (5 -> 20+)
-- [ ] Cross-runtime consistency tests
-- [ ] Visualization template expansion
-- [ ] Learning-progress tracking
+- "How do I solve Two Sum?" → Mode A + `domain-cs.md`; variable table + trace, not full code upfront
+- "Redis persistence interview prep" → Mode B; question chain + weak spots
+- "Explain Transformer attention" → Mode C; ASCII/visual + checks
+- "Systematically learn distributed systems" → Mode F; time-boxed plan + mixed drills
 
 ---
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Typical contribution paths:
-
-1. Add a new domain adapter in `references/domain-<name>.md`
-2. Add eval cases in `evals/evals.json`
-3. Improve teaching logic in `SKILL.md`
-4. Extend knowledge sources with MCP server + `references/source-<type>.md`
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ---
 

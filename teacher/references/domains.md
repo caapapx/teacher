@@ -79,4 +79,6 @@ The community can contribute deep adapter files for specific domains:
    - Recommended authoritative knowledge sources
 3. Add a reference to this file
 
-Example filenames: `domain-medicine.md`, `domain-law.md`, `domain-finance.md`, `domain-cs.md`
+Example filenames: `domain-medicine.md`, `domain-law.md`, `domain-finance.md`
+
+**Shipped adapter:** [`domain-cs.md`](domain-cs.md) — computer science and software engineering (algorithms, system design, interviews, languages).

@@ -1,0 +1,7 @@
+{
+  "validation": "static+routing-smoke",
+  "passed": true,
+  "errors": [],
+  "skill_md_lines": 115,
+  "eval_count": 8
+}

@@ -1,6 +1,6 @@
 {
   "skill_name": "teacher",
-  "description": "Universal learning coach eval baseline — validates teaching quality across domains and teaching modes",
+  "description": "Universal learning coach eval baseline — validates teaching quality across domains, CS topics, and teaching modes",
   "evals": [
     {
       "id": 1,
@@ -75,6 +75,52 @@
       ],
       "domain": "language",
       "tests_mode": "F"
+    },
+    {
+      "id": 6,
+      "name": "algorithm-two-sum",
+      "prompt": "我想学习两数之和这道算法题，LeetCode 第 1 题。我有 15 分钟，希望引导式讲解。",
+      "expected_output": "Should route to Mode A (algorithm concretization), read domain-cs context, include intuition, hand-trace, variable table, code mapping, self-check. Should NOT give complete solution code upfront.",
+      "assertions": [
+        "routes to guided decomposition / algorithm concretization mode",
+        "includes hand-trace with a small concrete example",
+        "includes variable or key element checklist in table format",
+        "includes self-check list",
+        "does not give complete solution code upfront",
+        "applies CS teaching patterns consistent with domain-cs"
+      ],
+      "domain": "algorithm",
+      "tests_mode": "A"
+    },
+    {
+      "id": 7,
+      "name": "socratic-redis-interview",
+      "prompt": "帮我准备 Redis 持久化的面试，我知道有 RDB 和 AOF 两种，但细节记不清了。",
+      "expected_output": "Should route to Mode B, probe existing knowledge first, use question chain, include interviewer follow-up depth, end with weak spots — not lecture directly.",
+      "assertions": [
+        "routes to socratic mode",
+        "asks about existing knowledge before explaining",
+        "designs progressive question chain",
+        "includes interviewer follow-up depth hints",
+        "ends with weak spot summary"
+      ],
+      "domain": "interview",
+      "tests_mode": "B"
+    },
+    {
+      "id": 8,
+      "name": "mental-model-transformer",
+      "prompt": "我想理解 Transformer 的自注意力机制，感觉很抽象，能画个图帮我理解吗？",
+      "expected_output": "Should route to Mode C with ASCII or structured visual plus text; ask about prior understanding first.",
+      "assertions": [
+        "routes to mental model + dual coding mode",
+        "includes visual representation (ASCII diagram / table / flowchart)",
+        "dual text and visual explanation",
+        "includes connection test questions",
+        "asks about user's existing understanding first"
+      ],
+      "domain": "ai",
+      "tests_mode": "C"
     }
   ]
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 撤销 install-global.sh 写入的全局符号链接（不删除本仓库目录）
+# Remove global teacher symlinks (does not delete this repo)
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -10,6 +10,14 @@ remove_if_symlink() {
     echo "removed: $target"
   elif [[ -e "$target" ]]; then
     echo "skip (not a symlink): $target"
+  fi
+}
+
+remove_legacy() {
+  local target=$1
+  if [[ -L "$target" || -e "$target" ]]; then
+    rm -rf "$target"
+    echo "removed legacy: $target"
   fi
 }
 
@@ -31,5 +39,17 @@ if [[ -L "$agents_teacher" ]]; then
 elif [[ -e "$agents_teacher" ]]; then
   echo "skip (not a symlink): $agents_teacher"
 fi
+
+# Legacy teacher-cs paths
+for legacy in \
+  "${HOME}/.agents/skills/teacher-cs-cursor" \
+  "${HOME}/.agents/skills/teacher-cs-claude" \
+  "${HOME}/.agents/skills/teacher-cs-codex" \
+  "${HOME}/.cursor/skills/teacher-cs" \
+  "${HOME}/.claude/skills/teacher-cs" \
+  "${HOME}/.codex/skills/teacher-cs" \
+  "${HOME}/.claude/commands/teacher-cs.md"; do
+  remove_legacy "$legacy"
+done
 
 echo "Done. Restart Cursor / Claude Code / Codex if they were using this skill."
